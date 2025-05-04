@@ -23,7 +23,7 @@ public class Menu {
                 nextId = s.getId() + 1;
             }
         }
-        studentService.setNextId(nextId); // обязательно обновляем nextId в сервисе!
+        studentService.setNextId(nextId); 
     }
 
     public void start() {
@@ -31,10 +31,22 @@ public class Menu {
 
         while (running) {
             printMenu();
+            
+            int choice = -1;
             System.out.print("Zvolte možnost: ");
-            int choice = scanner.nextInt();
-            scanner.nextLine(); // очистка ввода
-
+            if (scanner.hasNextInt()) {
+            	choice = scanner.nextInt();
+                scanner.nextLine(); 
+                if (choice < 0 || choice > 11) {
+                    System.out.println("Neplatná volba! Zadejte číslo mezi 0 a 11.");
+                    continue;
+                }
+            } else {
+                System.out.println("Neplatný vstup! Zadejte číslo.");
+                scanner.nextLine();
+                continue;
+            }
+            
             switch (choice) {
                 case 0:
                     recreateDatabase();
@@ -43,36 +55,36 @@ public class Menu {
                     addStudent();
                     break;
                 case 2:
-                    searchStudents();
+                    addGradeToStudent();
                     break;
                 case 3:
                     removeStudent();
                     break;
                 case 4:
-                    showSkill();
+                    searchStudents();
                     break;
                 case 5:
-                    printAllStudents();
+                    showSkill();
                     break;
                 case 6:
-                    printAverage();
+                    printAllStudents();
                     break;
                 case 7:
-                    saveStudentToFile();
+                    printAverage();
                     break;
                 case 8:
-                    loadStudentFromFile();
+                    printStudentCounts();
                     break;
                 case 9:
+                    saveStudentToFile();
+                    break;
+                case 10:
+                    loadStudentFromFile();
+                    break;
+                case 11:
                     database.saveStudents(studentManager.getAllStudents());
                     running = false;
                     System.out.println("Data byla uložena. Program se ukončuje...");
-                    break;
-                case 10:
-                    addGradeToStudent();
-                    break;
-                case 11:
-                    printStudentCounts();
                     break;
                 default:
                     System.out.println("Neplatná volba. Zkuste znovu.");
@@ -84,23 +96,54 @@ public class Menu {
         System.out.println("\n=== STUDENTSKÁ DATABÁZE ===");
         System.out.println("0. Vytvořit databázi (smazat vše a vytvořit znovu)");
         System.out.println("1. Přidat studenta");
-        System.out.println("2. Najít studenta (ID / jméno / příjmení)");
-        System.out.println("3. Odstranit studenta podle ID");
-        System.out.println("4. Ukázat dovednost studenta");
-        System.out.println("5. Vypsat všechny studenty podle příjmení");
-        System.out.println("6. Vypočítat průměr všech studentů");
-        System.out.println("7. Uložit studenta do souboru");
-        System.out.println("8. Načíst studenta ze souboru");
-        System.out.println("9. Konec");
-        System.out.println("10. Přidat známku studentovi");
-        System.out.println("11. Vypsat počet studentů podle skupin");
+        System.out.println("2. Přidat známku studentovi");
+        System.out.println("3. Odstranit studenta");
+        System.out.println("4. Najít studenta (ID / jméno / příjmení)");
+        System.out.println("5. Ukázat dovednost studenta");
+        System.out.println("6. Seznam studentů");
+        System.out.println("7. Průměr studentů");
+        System.out.println("8. Počet studentů");
+        System.out.println("9. Uložit studenta do souboru");
+        System.out.println("10. Načíst studenta ze souboru");
+        System.out.println("11. Ukončení programu");
+    }
+    
+    private void recreateDatabase() {
+        System.out.println("!!! Tato operace odstraní všechna data. Pokračovat? (ano/ne)");
+        String answer = scanner.nextLine();
+        if (answer.equalsIgnoreCase("ano")) {
+            database.recreateDatabase();
+            studentManager.clearAllStudents();
+            nextId = 1;
+            studentService.setNextId(nextId);
+            System.out.println("Databáze byla znovu vytvořena.");
+        } else {
+            System.out.println("Operace byla zrušena.");
+        }
     }
 
     private void addStudent() {
-        System.out.print("Zadejte jméno: ");
-        String firstName = scanner.nextLine().trim();
-        System.out.print("Zadejte příjmení: ");
-        String lastName = scanner.nextLine().trim();
+        String firstName;
+        while (true) {
+            System.out.print("Zadejte jméno: ");
+            firstName = scanner.nextLine().trim();
+            if (firstName.matches("[a-zA-Zá-žÁ-Ž]+")) {
+                break;
+            } else {
+                System.out.println("Neplatné jméno! Zadejte pouze písmena bez číslic a speciálních znaků.");
+            }
+        }
+
+        String lastName;
+        while (true) {
+            System.out.print("Zadejte příjmení: ");
+            lastName = scanner.nextLine().trim();
+            if (lastName.matches("[a-zA-Zá-žÁ-Ž]+")) {
+                break;
+            } else {
+                System.out.println("Neplatné příjmení! Zadejte pouze písmena bez číslic a speciálních znaků.");
+            }
+        }
 
         int yearOfBirth;
         while (true) {
@@ -108,13 +151,13 @@ public class Menu {
             if (scanner.hasNextInt()) {
                 yearOfBirth = scanner.nextInt();
                 scanner.nextLine();
-                if (yearOfBirth >= 1900 && yearOfBirth <= 2015) {
+                if (yearOfBirth >= 1900 && yearOfBirth <= 2025) {
                     break;
                 } else {
-                    System.out.println("Neplatný rok! Rok musí být mezi 1900 a 2015.");
+                    System.out.println("Neplatný rok! Rok musí být mezi 1900 a 2025.");
                 }
             } else {
-                System.out.println("Neplatný vstup! Zadej číslo.");
+                System.out.println("Neplatný vstup! Zadejte číslo.");
                 scanner.nextLine();
             }
         }
@@ -131,53 +174,137 @@ public class Menu {
                 if (specialization == 1 || specialization == 2) {
                     break;
                 } else {
-                    System.out.println("Neplatná volba! Zadej 1 nebo 2.");
+                    System.out.println("Neplatná volba! Zadejte 1 nebo 2.");
                 }
             } else {
-                System.out.println("Neplatný vstup! Zadej číslo.");
+                System.out.println("Neplatný vstup! Zadejte číslo.");
                 scanner.nextLine();
             }
         }
 
-        Student student = studentService.addStudent(firstName, lastName, yearOfBirth, specialization);
-        if (student != null) {
-            System.out.println("\n=== Nový student přidán ===");
-            System.out.println("ID: " + student.getId());
-            System.out.println("Jméno: " + student.getFirstName());
-            System.out.println("Příjmení: " + student.getLastName());
-            System.out.println("Rok narození: " + student.getYearOfBirth());
-            System.out.println("Obor: " + (student instanceof TelecomStudent ? "Telekomunikace" : "Kyberbezpečnost"));
-            System.out.println("============================\n");
-            nextId = studentService.getNextId(); // Обновляем nextId после добавления
+        Student student;
+        if (specialization == 1) {
+            student = new TelecomStudent(nextId++, firstName, lastName, yearOfBirth);
         } else {
-            System.out.println("Chyba při přidávání studenta.");
+            student = new CyberStudent(nextId++, firstName, lastName, yearOfBirth);
+        }
+
+        studentManager.addStudent(student);
+
+        System.out.println("\n=== Nový student přidán ===");
+        System.out.println("ID: " + student.getId());
+        System.out.println("Jméno: " + student.getFirstName());
+        System.out.println("Příjmení: " + student.getLastName());
+        System.out.println("Rok narození: " + student.getYearOfBirth());
+        System.out.println("Obor: " + (specialization == 1 ? "Telekomunikace" : "Kyberbezpečnost"));
+        System.out.println("============================\n");
+    }
+
+    
+    private void addGradeToStudent() {
+        System.out.print("Zadej ID studenta: ");
+        if (scanner.hasNextInt()) {
+            int id = scanner.nextInt();
+            scanner.nextLine();
+            System.out.print("Zadejte známky oddělené mezerou: ");
+            String gradesLine = scanner.nextLine();
+            
+            boolean success = studentService.addGrades(id, gradesLine);
+            if (success) {
+                System.out.println("Známky byly úspěšně přidány.");
+            } else {
+                System.out.println("Známky nebyly přidány.");
+            }
+        } else {
+            System.out.println("Neplatný vstup! Očekává se číslo.");
+            scanner.nextLine();
         }
     }
 
     private void removeStudent() {
-        System.out.print("Zadej ID studenta k odstranění: ");
-        int id = scanner.nextInt();
-        scanner.nextLine();
-
-        boolean removed = studentService.removeStudent(id);
-        if (removed) {
-            System.out.println("Student byl odstraněn.");
+        System.out.print("Zadejte ID studenta k odstranění: ");
+        
+        if (scanner.hasNextInt()) {
+        	int id = scanner.nextInt();
+            scanner.nextLine();
+            
+            boolean removed = studentService.removeStudent(id);
+            if (removed) {
+                System.out.println("Student byl odstraněn.");
+            } else {
+                System.out.println("Student nenalezen.");
+            }
         } else {
-            System.out.println("Student nenalezen.");
+            System.out.println("Neplatný vstup! Očekává se číslo.");
+            scanner.nextLine();
+        }
+    }
+    
+    private void searchStudents() {
+        System.out.print("Zadejte ID, jméno nebo příjmení studenta: ");
+        String input = scanner.nextLine();
+        List<Student> found = studentService.findStudentFlexible(input);
+        if (found.isEmpty()) {
+            System.out.println("Student nebyl nalezen.");
+        } else {
+            for (Student s : found) {
+                System.out.println(s);
+            }
+        }
+    }
+    
+    private void showSkill() {
+        System.out.print("Zadejte ID studenta: ");
+        if (scanner.hasNextInt()) {
+            int id = scanner.nextInt();
+            scanner.nextLine();
+            studentService.showSkill(id);
+        } else {
+            System.out.println("Neplatný vstup! Zadejte číslo.");
+            scanner.nextLine();
         }
     }
 
-    private void showSkill() {
-        System.out.print("Zadej ID studenta: ");
-        int id = scanner.nextInt();
-        scanner.nextLine();
-        studentService.showSkill(id);
-    }
-
     private void printAllStudents() {
-        List<Student> sortedStudents = studentService.getAllStudentsSorted();
-        for (Student s : sortedStudents) {
-            System.out.println(s);
+        System.out.println("\n=== Výpis studentů (podle příjmení) ===");
+        System.out.println("1. Všechny studenty");
+        System.out.println("2. Studenty oboru Telekomunikace");
+        System.out.println("3. Studenty oboru Kyberbezpečnost");
+        System.out.print("Zvolte možnost: ");
+        
+        if (!scanner.hasNextInt()) {
+            System.out.println("Neplatná volba! Musíte zadat číslo.");
+            scanner.nextLine(); 
+            return;
+        }
+
+        int choice = scanner.nextInt();
+        scanner.nextLine(); 
+
+        List<Student> students = studentManager.getStudentsSortedByLastName();
+
+        switch (choice) {
+            case 1:
+                for (Student s : students) {
+                    System.out.println(s);
+                }
+                break;
+            case 2:
+                for (Student s : students) {
+                    if (s instanceof TelecomStudent) {
+                        System.out.println(s);
+                    }
+                }
+                break;
+            case 3:
+                for (Student s : students) {
+                    if (s instanceof CyberStudent) {
+                        System.out.println(s);
+                    }
+                }
+                break;
+            default:
+                System.out.println("Neplatná volba.");
         }
     }
 
@@ -188,24 +315,46 @@ public class Menu {
         System.out.println("3. Průměr studentů oboru Kyberbezpečnost");
         System.out.print("Zvolte možnost: ");
 
-        int choice = scanner.nextInt();
-        scanner.nextLine();
-
-        double average = studentService.calculateAverage(choice);
-        if (average == 0.0) {
-            System.out.println("Žádná data pro výpočet průměru.");
-        } else {
-            System.out.printf("Výpočet průměru: %.2f\n", average);
+        if (!scanner.hasNextInt()) {
+            System.out.println("Neplatná volba! Musíte zadat číslo.");
+            scanner.nextLine(); 
+            return;
         }
+
+        int choice = scanner.nextInt();
+        scanner.nextLine(); 
+
+        double average = 0.0;
+
+        switch (choice) {
+            case 1:
+                average = studentManager.averageGrageForAll();
+                System.out.printf("Průměr všech studentů: %.2f\n", average);
+                break;
+            case 2:
+                average = studentManager.averageGradeForSpecialization("telecom");
+                System.out.printf("Průměr studentů Telekomunikace: %.2f\n", average);
+                break;
+            case 3:
+                average = studentManager.averageGradeForSpecialization("cyber");
+                System.out.printf("Průměr studentů Kyberbezpečnost: %.2f\n", average);
+                break;
+            default:
+                System.out.println("Neplatná volba.");
+        }
+    }
+    
+    private void printStudentCounts() {
+        studentService.printStudentCounts();
     }
 
     private void saveStudentToFile() {
-        System.out.print("Zadej název souboru: ");
+        System.out.print("Zadejte název souboru (např. 'soubor.txt'): ");
         String filename = scanner.nextLine();
         boolean append = false;
 
         while (true) {
-            System.out.print("Zadej ID studenta k uložení: ");
+            System.out.print("Zadejte ID studenta k uložení: ");
             int id = scanner.nextInt();
             scanner.nextLine();
 
@@ -226,7 +375,7 @@ public class Menu {
     }
 
     private void loadStudentFromFile() {
-        System.out.print("Zadej název souboru: ");
+        System.out.print("Zadejte název souboru: ");
         String filename = scanner.nextLine();
 
         List<Student> students = FileManager.loadAllStudentsFromTextFile(filename);
@@ -239,52 +388,6 @@ public class Menu {
             }
             studentService.setNextId(nextId);
             System.out.println("Studenti byli úspěšně načteni ze souboru.");
-        }
-    }
-
-    private void addGradeToStudent() {
-        System.out.print("Zadej ID studenta: ");
-        int id = scanner.nextInt();
-        scanner.nextLine();
-        System.out.print("Zadej známky oddělené mezerou: ");
-        String gradesLine = scanner.nextLine();
-
-        boolean success = studentService.addGrades(id, gradesLine);
-        if (success) {
-            System.out.println("Známky byly úspěšně přidány.");
-        } else {
-            System.out.println("Známky nebyly přidány.");
-        }
-    }
-
-    private void printStudentCounts() {
-        studentService.printStudentCounts();
-    }
-
-    private void recreateDatabase() {
-        System.out.println("!!! Tato operace odstraní všechna data. Pokračovat? (ano/ne)");
-        String answer = scanner.nextLine();
-        if (answer.equalsIgnoreCase("ano")) {
-            database.recreateDatabase();
-            studentManager.clearAllStudents();
-            nextId = 1;
-            studentService.setNextId(nextId);
-            System.out.println("Databáze byla znovu vytvořena.");
-        } else {
-            System.out.println("Operace byla zrušena.");
-        }
-    }
-
-    private void searchStudents() {
-        System.out.print("Zadej ID, jméno nebo příjmení studenta: ");
-        String input = scanner.nextLine();
-        List<Student> found = studentService.findStudentFlexible(input);
-        if (found.isEmpty()) {
-            System.out.println("Student nebyl nalezen.");
-        } else {
-            for (Student s : found) {
-                System.out.println(s);
-            }
         }
     }
 }

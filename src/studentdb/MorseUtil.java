@@ -33,7 +33,7 @@ public class MorseUtil {
         morseCodeMap.put('X', "-..-");
         morseCodeMap.put('Y', "-.--");
         morseCodeMap.put('Z', "--..");
-        morseCodeMap.put(' ', "/"); // Пробел между словами
+        morseCodeMap.put(' ', "/"); 
     }
 
     public static String toMorse(String text) {
@@ -43,7 +43,7 @@ public class MorseUtil {
             if (code != null) {
                 morse.append(code).append(" ");
             } else {
-                morse.append("? "); // если символ не найден (например, число)
+                morse.append("? "); 
             }
         }
         return morse.toString();

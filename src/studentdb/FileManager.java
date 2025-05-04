@@ -6,7 +6,6 @@ import java.util.List;
 
 public class FileManager {
 
-    // Сохранить одного студента в файл
     public static void saveStudentToTextFile(Student student, String filename, boolean append) {
         try (BufferedWriter writer = new BufferedWriter(new FileWriter(filename, append))) {
             StringBuilder sb = new StringBuilder();
@@ -21,7 +20,7 @@ public class FileManager {
             for (int grade : student.getGrades()) {
                 sb.append(grade).append(" ");
             }
-            writer.write(sb.toString().trim()); // убираем последний пробел
+            writer.write(sb.toString().trim()); 
             writer.newLine();
             System.out.println("Student byl úspěšně uložen do souboru.");
         } catch (IOException e) {
@@ -30,7 +29,6 @@ public class FileManager {
         }
     }
 
-    // Загрузить всех студентов из файла
     public static List<Student> loadAllStudentsFromTextFile(String filename) {
         List<Student> students = new ArrayList<>();
         try (BufferedReader reader = new BufferedReader(new FileReader(filename))) {
@@ -49,10 +47,9 @@ public class FileManager {
         return students;
     }
 
-    // Помощник: создать студента из одной строки
     private static Student loadStudentFromTextLine(String line) {
         try {
-            String[] parts = line.split(",", 5); // максимум 5 частей
+            String[] parts = line.split(",", 5); 
             if (parts.length < 4) {
                 return null;
             }

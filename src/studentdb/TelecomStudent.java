@@ -10,7 +10,7 @@ public class TelecomStudent extends Student{
 	public void showSkill() {
 		String fullName = getFirstName() + "" + getLastName();
 		String morseCode = MorseUtil.toMorse(fullName.toUpperCase());
-		System.out.println("Jmeno a prijmeni v Morseove abecede: " + morseCode);
+		System.out.println("Jméno a příjmení v Morseově abecedě: " + morseCode);
 	}
 
 }

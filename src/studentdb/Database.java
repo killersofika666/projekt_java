@@ -38,7 +38,7 @@ public class Database {
                     stmt.executeUpdate(query);
                 }
             }
-            System.out.println("Database initialized successfully!");
+            System.out.println("Databáze byla úspěšně inicializována!");
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -46,7 +46,7 @@ public class Database {
 
     public void saveStudents(List<Student> students) {
         try (Connection conn = connect()) {
-            conn.setAutoCommit(false); // чтобы сделать всё одной транзакцией
+            conn.setAutoCommit(false); 
 
             try (Statement stmt = conn.createStatement()) {
                 stmt.execute("PRAGMA foreign_keys = OFF;");
@@ -82,7 +82,7 @@ public class Database {
             }
 
             conn.commit();
-            System.out.println("Data saved to database successfully!");
+            System.out.println("Data byla úspěšně uložena do databáze!");
         } catch (Exception e) {
             e.printStackTrace();
             try (Connection conn = connect()) {
@@ -130,7 +130,7 @@ public class Database {
                     }
                 }
             }
-            System.out.println("Data loaded from database successfully!");
+            System.out.println("Data byla úspěšně načtena z databáze!");
         } catch (Exception e) {
             e.printStackTrace();
         }

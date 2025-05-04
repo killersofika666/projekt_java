@@ -23,7 +23,7 @@ public abstract class Student {
 		if (grade >= 1 && grade <= 5) {
 			grades.add(grade);
 		} else {
-			System.out.println("Neplatna znamka! Platne znamky jsou 1 az 5.");
+			System.out.println("Neplatná známka! Platné známky jsou 1 až 5.");
 		}
 	}
 	
@@ -44,7 +44,7 @@ public abstract class Student {
 	
 	public void setId(int id) {
 	    this.id = id;
-	}
+	}	
 
 	public String getFirstName() {
 		return firstName;

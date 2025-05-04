@@ -70,7 +70,7 @@ public class StudentManager {
 	    }
 
 	    if (count == 0) {
-	        return 0.0; // чтобы не было деления на ноль
+	        return 0.0;
 	    } else {
 	        return sum / count;
 	    }

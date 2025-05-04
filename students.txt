@@ -1,3 +1,0 @@
-Nazar,Azimov,2003,cyber,
-Sofiia,Jojo,2003,telecom,
-Jirka ,Novakova,2004,cyber,

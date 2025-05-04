@@ -43,6 +43,7 @@ Po spuštění programu je uživateli nabídnuto textové menu:
 10. Načíst studenta ze souboru
 11. Ukončení programu
 ```
+
 **Popis funkcí:**
 -   **0** — Vytvoření nové databáze v SQLite (smaže všechna existující data).
     
@@ -85,6 +86,7 @@ studentdb/
 ├── StudentService.java    // pomocné funkce Menu.java
 └── MorseUtil.java         // Převod textu na Morseovu abecedu
 ```
+
 **Vysvětlení klíčových tříd:**
 -   **Student**  
     Abstraktní třída, která definuje společné vlastnosti studentů a obsahuje abstraktní metodu `showSkill()`.

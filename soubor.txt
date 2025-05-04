@@ -1,0 +1,21 @@
+Jan,Snow,2002,telecom, 1 2 1 3 2
+Iveta,Dollar,2005,cyber, 3 4 5 2 1
+Sofie,Kal,2000,telecom, 1 1 2 2 3
+Jirka,Novakova,2003,cyber, 5 5 4 3
+Petr,Kral,1999,telecom, 2 3 4 1
+Tomas,Goldfinger,2001,cyber, 1 2 2 3 4
+Martina,Silverova,2004,telecom, 2 2 3 3
+Sarka,Popelkova,2006,cyber, 5 4 5 3
+Honza,Hvezdicka,2002,telecom, 1 2 1 2 1
+Karel,Vesely,2000,cyber, 2 3 4
+Lucie,Srdickova,2005,telecom, 1 1 1 2
+Simona,Lovely,2003,cyber, 3 4 2 5
+David,Cerny,2002,telecom, 2 2 2 3
+Eva,Zlatnickova,1998,cyber, 4 4 3 5
+Radek,Usmevavy,2001,telecom, 1 3 2 1
+Vojta,Skakal,2003,cyber, 5 3 4 2 1
+Barbora,Bily,2000,telecom, 2 2 2
+Andrea,Happy,2004,cyber, 1 1 2 2
+Lukas,Ruzicka,2005,telecom, 3 3 4 1
+Adela,Slunickova,2006,cyber, 2 1 1 3 5
+

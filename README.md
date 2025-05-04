@@ -1,4 +1,4 @@
-# ======= Studentská databáze=======
+# ======= Studentská databáze =======
 ##  Popis programu
 
 Program slouží ke správě studentů technické univerzity.
